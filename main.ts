@@ -28,6 +28,10 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
                 story.printCharacterText("They're Closed Right Now, But Try Again Later!", "")
                 pause(500)
                 farmquest1 = 2
+                Achievements.showAchievement(
+                "Happy Helper",
+                "Help The Farmer Move His Seeds"
+                )
             } else {
                 story.printCharacterText("I'll Have More Chores For You Later if You Like!", "")
             }
@@ -59,6 +63,14 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         Sheep += -1
         if (Sheep == 0) {
             mySprite2.destroy()
+            XP += 10
+            if (HACH == 0) {
+                HACH = 1
+                Achievements.showAchievement(
+                "Hunter",
+                "Hunt The Sheep"
+                )
+            }
         }
     }
 })
@@ -73,6 +85,8 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.setImage(assets.image`myImage1`)
 })
+let HACH = 0
+let XP = 0
 let facing = 0
 let seedhave = 0
 let farmquest1 = 0
@@ -95,6 +109,23 @@ tiles.placeOnTile(mySprite4, tiles.getTileLocation(17, 5))
 game.onUpdate(function () {
 	
 })
+game.onUpdateInterval(400, function () {
+	
+})
+game.onUpdateInterval(60000, function () {
+    if (Sheep == 0) {
+        mySprite2 = sprites.create(assets.image`myImage3`, SpriteKind.animal)
+        Sheep = 3
+        tiles.placeOnRandomTile(mySprite2, assets.tile`myTile`)
+    }
+})
+forever(function () {
+    if (mySprite.tileKindAt(TileDirection.Center, assets.tile`myTile10`)) {
+        if (farmquest1 != 2) {
+            tiles.placeOnTile(mySprite, tiles.getTileLocation(19, 9))
+        }
+    }
+})
 forever(function () {
     if (Sheep != 0) {
         mySprite2.x += randint(-2, 2)
@@ -105,4 +136,7 @@ forever(function () {
         mySprite4.destroy()
         seedhave = 1
     }
+})
+game.onUpdateInterval(200, function () {
+	
 })
